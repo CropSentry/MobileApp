@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'auth_service.dart';
 import 'package:crop_sentry/theme.dart';
 import 'package:crop_sentry/home_page.dart';
+import 'package:crop_sentry/server/sensor_repository.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  final SensorRepository repository;
+  const SignupPage({super.key, required this.repository});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -26,7 +28,9 @@ class _SignupPageState extends State<SignupPage> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(
+            builder: (context) => HomePage(repository: widget.repository),
+          ),
           (route) => false, // Clears the back stack
         );
       }
