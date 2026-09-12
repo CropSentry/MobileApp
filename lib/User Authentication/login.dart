@@ -3,9 +3,11 @@ import 'auth_service.dart';
 import 'package:crop_sentry/home_page.dart';
 import 'signup.dart';
 import 'package:crop_sentry/theme.dart';
+import 'package:crop_sentry/server/sensor_repository.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final SensorRepository repository;
+  const LoginPage({super.key, required this.repository});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -27,7 +29,9 @@ class _LoginPageState extends State<LoginPage> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(
+            builder: (context) => HomePage(repository: widget.repository),
+          ),
         );
       }
     } catch (e) {
@@ -107,7 +111,10 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SignupPage()),
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SignupPage(repository: widget.repository),
+                ),
               ),
               child: const Text(
                 'Don\'t have an account? Sign up',

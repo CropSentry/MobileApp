@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'User Authentication/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'display_card.dart';
+import 'server/sensor_repository.dart';
+import 'server/sensor_data.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  final SensorRepository repository;
+  const HomePage({super.key, required this.repository});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -18,6 +16,7 @@ class _HomePageState extends State<HomePage> {
     final emailPrefix = (user != null && user.email != null)
         ? user.email!.split('@').first
         : 'Farmer'; // Fallback text
+    final String currentUid = FirebaseAuth.instance.currentUser?.uid ?? '';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -29,43 +28,54 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          Text(
-            'Welcome $emailPrefix!',
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ),
-          ),
-          const SizedBox(height: 16),
-          //test cards start
-          SentryCard(
-            title: "Test Card 1",
-            status: "OK",
-            moisture: 9.0,
-            temperature: 75.0,
-            isOnline: true,
-          ),
-          SentryCard(
-            title: "Test Card 2",
-            status: "Alert",
-            moisture: 10.5,
-            temperature: 60.0,
-            isOnline: false,
-          ),
-          SentryCard(
-            title: "Test Card 3",
-            status: "Danger",
-            moisture: 2.1,
-            temperature: 90.0,
-            isOnline: true,
-          ),
-          //test cards end
-          //This will have all the Cards
-        ],
+      body: StreamBuilder<List<SensorData>>(
+        stream: repository.getSensorStream(currentUid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No sentries found for $currentUid.'));
+          }
+          final dataList = snapshot.data!;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Welcome $emailPrefix!',
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: dataList.length,
+                  itemBuilder: (context, index) {
+                    final sensor = dataList[index];
+                    // KEEP YOUR AESTHETICS:
+                    // Pass the raw data directly into your existing, untouched UI components
+                    // return DisplayCard(temperature: sensor.temperature, humidity: sensor.humidity);
+                    return SentryCard(
+                      title: 'Sensor ID: ${sensor.id}',
+                      status: "Ok",
+                      moisture: sensor.humidity,
+                      temperature: sensor.temperature,
+                      isOnline: true,
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
