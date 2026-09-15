@@ -4,10 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'display_card.dart';
 import 'server/sensor_repository.dart';
 import 'server/sensor_data.dart';
+import 'dart:math';
 
 class HomePage extends StatelessWidget {
   final SensorRepository repository;
   const HomePage({super.key, required this.repository});
+  double round(double input, int decimal) {
+    return (input * pow(10, decimal)).round() / pow(10, decimal);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +64,19 @@ class HomePage extends StatelessWidget {
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
                     final sensor = dataList[index];
-                    // KEEP YOUR AESTHETICS:
                     // Pass the raw data directly into your existing, untouched UI components
                     // return DisplayCard(temperature: sensor.temperature, humidity: sensor.humidity);
                     return SentryCard(
-                      title: 'Sensor ID: ${sensor.id}',
-                      status: "Ok",
-                      moisture: sensor.humidity,
-                      temperature: sensor.temperature,
+                      title: 'Sensor ID: ${sensor.nodeId}',
+                      status: "OK",
+                      moisture: (round(
+                        (sensor.humidSensor1 + sensor.humidSensor2) / 2,
+                        2,
+                      )),
+                      temperature: (round(
+                        (sensor.tempSensor1 + sensor.tempSensor2) / 2,
+                        2,
+                      )),
                       isOnline: true,
                     );
                   },
