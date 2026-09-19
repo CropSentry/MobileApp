@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
-import 'package:crop_sentry/home_page.dart';
+import 'package:crop_sentry/main_pages/home_page.dart';
 import 'signup.dart';
-import 'package:crop_sentry/theme.dart';
+import 'package:crop_sentry/usedWidgets/theme.dart';
 import 'package:crop_sentry/server/sensor_repository.dart';
 
 class LoginPage extends StatefulWidget {
@@ -55,73 +55,78 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: const Text('Crop Sentry Login')),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppTheme.primaryGreen,
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppTheme.primaryGreen,
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
                       color: AppTheme.primaryGreen,
+                      width: 2,
                     ),
-                  )
-                : ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryGreen,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppTheme.primaryGreen,
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: AppTheme.primaryGreen,
+                      ),
+                    )
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryGreen,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: _login,
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
-                    onPressed: _login,
-                    child: const Text('Login', style: TextStyle(fontSize: 18)),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        SignupPage(repository: widget.repository),
                   ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      SignupPage(repository: widget.repository),
+                ),
+                child: const Text(
+                  'Don\'t have an account? Sign up',
+                  style: TextStyle(color: AppTheme.primaryGreen),
                 ),
               ),
-              child: const Text(
-                'Don\'t have an account? Sign up',
-                style: TextStyle(color: AppTheme.primaryGreen),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

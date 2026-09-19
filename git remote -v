@@ -1,0 +1,10 @@
+[33mcommit a8eb411735a95c632a1d385bfe46a6ca4a7bfc27[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32maahan[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/aahan[m[33m, [m[1;32mdevelop[m[33m)[m
+Author: Aahan Patel <aahanpatel2009@gmail.com>
+Date:   Tue Sep 15 18:23:52 2026 -0400
+
+    Local Server Code Done
+
+ lib/home_page.dart                         | 19 [32m++++++++[m[31m---[m
+ lib/server/firebase_sensor_repository.dart | 30 [32m++++++++++[m[31m-------[m
+ lib/server/sensor_data.dart                | 54 [32m+++++++++++++++++++++++++[m[31m-----[m
+ 3 files changed, 76 insertions(+), 27 deletions(-)

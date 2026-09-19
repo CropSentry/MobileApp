@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:crop_sentry/server/sensor_repository.dart';
-import 'package:crop_sentry/main.dart';
+import 'package:crop_sentry/main_pages/main.dart';
 import 'package:crop_sentry/server/firebase_sensor_repository.dart';
 
 void main() {

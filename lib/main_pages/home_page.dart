@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'User Authentication/auth_service.dart';
+import '../User Authentication/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'display_card.dart';
-import 'server/sensor_repository.dart';
-import 'server/sensor_data.dart';
+import '../usedWidgets/display_card.dart';
+import '../server/sensor_repository.dart';
+import '../server/sensor_data.dart';
 import 'dart:math';
 
 class HomePage extends StatelessWidget {
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
                     // Pass the raw data directly into your existing, untouched UI components
                     // return DisplayCard(temperature: sensor.temperature, humidity: sensor.humidity);
                     return SentryCard(
-                      title: 'Sensor ID: ${sensor.nodeId}',
+                      title: sensor.nodeId,
                       status: "OK",
                       moisture: (round(
                         (sensor.humidSensor1 + sensor.humidSensor2) / 2,
@@ -78,6 +78,7 @@ class HomePage extends StatelessWidget {
                         2,
                       )),
                       isOnline: true,
+                      repository: repository,
                     );
                   },
                 ),

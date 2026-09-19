@@ -2,12 +2,11 @@ import 'package:crop_sentry/server/sensor_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart';
+import '../firebase_options.dart';
 import 'home_page.dart';
-import 'User Authentication/login.dart';
-import 'theme.dart';
-import 'server/firebase_sensor_repository.dart';
-import 'server/sensor_data.dart';
+import '../User Authentication/login.dart';
+import '../usedWidgets/theme.dart';
+import '../server/firebase_sensor_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,13 +1,15 @@
+import 'package:crop_sentry/main_pages/data.dart';
+import 'package:crop_sentry/server/sensor_repository.dart';
 import 'package:flutter/material.dart';
 import 'theme.dart';
 
 class SentryCard extends StatelessWidget {
-  final String title;
+  final int title;
   final String status;
   final double moisture;
   final double temperature;
   final bool isOnline;
-
+  final SensorRepository repository;
   const SentryCard({
     super.key,
     required this.title,
@@ -15,6 +17,7 @@ class SentryCard extends StatelessWidget {
     required this.moisture,
     required this.temperature,
     required this.isOnline,
+    required this.repository,
   });
 
   Color _getCardColor() {
@@ -48,11 +51,24 @@ class SentryCard extends StatelessWidget {
                   size: 30,
                 ),
                 SizedBox(width: 16),
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  'Sensor ID: $title',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 Spacer(),
                 IconButton(
                   icon: Icon(Icons.arrow_forward_ios),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DataPage(
+                          repository: repository,
+                          targetNodeId: title,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

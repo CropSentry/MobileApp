@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
-import 'package:crop_sentry/theme.dart';
-import 'package:crop_sentry/home_page.dart';
+import 'package:crop_sentry/usedWidgets/theme.dart';
+import 'package:crop_sentry/main_pages/home_page.dart';
 import 'package:crop_sentry/server/sensor_repository.dart';
 
 class SignupPage extends StatefulWidget {
